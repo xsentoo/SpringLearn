@@ -7,6 +7,7 @@ import com.Ecommerce.LearnEcommerce.model.User;
 import com.Ecommerce.LearnEcommerce.repository.UserRepository;
 import org.hibernate.usertype.UserTypeSupport;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,6 +49,13 @@ public class UserController {
         userData.setName(user.getName());
         return userRepository.save(userData);
 
+
+    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable Long id){
+        UserEntity userData = userRepository.findById(id).orElseThrow(()->new RessourceNotFoundException("User not found whith this id : " + id));
+        userRepository.delete(userData);
+        return ResponseEntity.ok().build();
 
     }
 }
